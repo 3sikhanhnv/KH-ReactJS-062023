@@ -69,9 +69,15 @@ app.use(express.json());
 const routes = require("./routes/routes");
 const routesUsers = require("./routes/routes.users");
 const routesRoles = require("./routes/routes.roles");
+const routesProducts = require("./routes/routes.product");
+const routesCategories = require("./routes/routes.category");
+const routesCart = require("./routes/routes.cart");
 app.use("/api/users", routesUsers);
 app.use("/api/roles", routesRoles);
 app.use("/api", routes);
+app.use("/api/products", routesProducts);
+app.use("/api/categories", routesCategories);
+app.use("/api/carts", routesCart);
 //
 app.listen(8080, () => {
   console.log(`Server Started at ${8080}`);
