@@ -18,6 +18,35 @@ routesCategories.get("/", async (req, res) => {
   }
 });
 
+routesCategories.get("/:id", async (req, res) => {
+  try {
+    // if (req.headers.authorization) {
+    const id = req.params.id;
+    if (id) {
+      const data = await ModelCategory.findById(id);
+
+      if (data) {
+        res.status(200).json({
+          statusCode: 200,
+          data,
+        });
+      } else {
+        res.status(400).json({
+          statusCode: 400,
+          message: "Không tìm thấy category",
+        });
+      }
+    } else {
+      res.status(400).json({
+        statusCode: 400,
+        message: "Không tìm thấy category",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message + req.params });
+  }
+});
+
 routesCategories.post("/", async (req, res) => {
   let data = new ModelCategory({
     category: req.body.category,

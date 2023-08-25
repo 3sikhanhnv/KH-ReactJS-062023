@@ -25,6 +25,35 @@ routesProducts.get("/", async (req, res) => {
   }
 });
 
+routesProducts.get("/:id", async (req, res) => {
+  try {
+    // if (req.headers.authorization) {
+    const id = req.params.id;
+    if (id) {
+      const data = await ModelProduct.findById(id);
+
+      if (data) {
+        res.status(200).json({
+          statusCode: 200,
+          data,
+        });
+      } else {
+        res.status(400).json({
+          statusCode: 400,
+          message: "Không tìm thấy product",
+        });
+      }
+    } else {
+      res.status(400).json({
+        statusCode: 400,
+        message: "Không tìm thấy product",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message + req.params });
+  }
+});
+
 routesProducts.post("/", async (req, res) => {
   let data = new ModelProduct({
     name: req.body.name,
@@ -55,7 +84,7 @@ routesProducts.post("/", async (req, res) => {
     // Quay phim
     film: req.body.film ?? "",
     // Đèn Flash
-    flash: req.body.film ?? 0, //0 ko có, 1 có
+    flash: req.body.flash ?? 0, //0 ko có, 1 có
     // Camera trước
     // Độ phân giải
     resolutionFrontCamera: req.body.resolutionFrontCamera ?? "",

@@ -4,6 +4,49 @@ const ModelRole = require("../models/role.model");
 const ModelToken = require("../models/token.model");
 const routerUser = express.Router();
 const jwt = require("jsonwebtoken");
+
+routes.get("/", async (req, res) => {
+  try {
+    // if (req.headers.authorization) {
+    const listUser = await ModelUser.find(req.query ? req.query : null);
+    res.status(200).json({
+      statusCode: 200,
+      data: listUser,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message + req.params });
+  }
+});
+
+routes.get("/:id", async (req, res) => {
+  try {
+    // if (req.headers.authorization) {
+    const id = req.params.id;
+    if (id) {
+      const data = await ModelUser.findById(id);
+
+      if (data) {
+        res.status(200).json({
+          statusCode: 200,
+          data,
+        });
+      } else {
+        res.status(400).json({
+          statusCode: 400,
+          message: "Không tìm thấy user",
+        });
+      }
+    } else {
+      res.status(400).json({
+        statusCode: 400,
+        message: "Không tìm thấy user",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message + req.params });
+  }
+});
+
 // {
 //   "username": "khanhtmd",
 //   "password": "Khanh@123",

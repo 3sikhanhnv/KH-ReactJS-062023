@@ -19,6 +19,35 @@ routesCart.get("/", async (req, res) => {
   }
 });
 
+routesCart.get("/:id", async (req, res) => {
+  try {
+    // if (req.headers.authorization) {
+    const id = req.params.id;
+    if (id) {
+      const data = await ModelCart.findById(id);
+
+      if (data) {
+        res.status(200).json({
+          statusCode: 200,
+          data,
+        });
+      } else {
+        res.status(400).json({
+          statusCode: 400,
+          message: "Không tìm thấy cart",
+        });
+      }
+    } else {
+      res.status(400).json({
+        statusCode: 400,
+        message: "Không tìm thấy cart",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message + req.params });
+  }
+});
+
 routesCart.post("/", async (req, res) => {
   try {
     const listProducts = await ModelProduct.find();
